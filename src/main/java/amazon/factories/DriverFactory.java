@@ -4,8 +4,11 @@ import amazon.choices.Browser;
 import amazon.choices.Host;
 import com.typesafe.config.Config;
 import amazon.config.EnvFactory;
+import amazon.utility.Log;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -18,13 +21,12 @@ public class DriverFactory {
     private static Config config = EnvFactory.getInstance().getConfig();
     private static final Host HOST = Host.parse(config.getString("HOST"));
     private static final Browser BROWSER = Browser.parse(config.getString("BROWSER"));
-
     private DriverFactory() {
         throw new IllegalStateException("Static factory class");
     }
 
     public static WebDriver getDriver() {
-        log.info("Getting driver for host: {}", HOST);
+        Log.info("Getting driver for host: {}" + HOST);
         switch (HOST) {
             case LOCALHOST:
                 return getLocalWebDriver();
@@ -38,7 +40,7 @@ public class DriverFactory {
     }
 
     private static WebDriver getLocalWebDriver() {
-        log.info("Getting driver for browser: {}", BROWSER);
+        Log.info("Getting driver for browser: {}" + BROWSER);
         switch (BROWSER) {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
